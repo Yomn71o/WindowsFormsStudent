@@ -1,0 +1,10 @@
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\bin\Debug\WindowsFormsStudent.exe.config
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\bin\Debug\WindowsFormsStudent.exe
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\bin\Debug\WindowsFormsStudent.pdb
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.csproj.AssemblyReference.cache
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.Properties.Resources.resources
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.csproj.GenerateResource.cache
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.csproj.CoreCompileInputs.cache
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.exe
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.pdb
+C:\Users\Dell\source\repos\WindowsFormsStudent\WindowsFormsStudent\obj\Debug\WindowsFormsStudent.Form1Resources.resources
