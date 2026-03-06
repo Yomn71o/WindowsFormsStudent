@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using WindowsFormsStudent;
 
 namespace WindowsFormsStudent
 {
@@ -54,41 +52,70 @@ namespace WindowsFormsStudent
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (!ValidateInputs()) return;
+
             Student newStudent = new Student
             {
-                Id = int.Parse(txtId.Text),
-                Name = txtName.Text,
-                Class= txtClass.Text,
-                Age = int.Parse(txtAge.Text),
+                Id        = int.Parse(txtId.Text),
+                Name      = txtName.Text,
+                Class     = txtClass.Text,
+                Age       = int.Parse(txtAge.Text),
                 ImageData = _currentImageData
             };
 
             _dbContext.AddStudent(newStudent);
             ReFreshGrid();
             ClearFields();
+            MessageBox.Show("Student added successfully!", "Success",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            if (!ValidateInputs()) return;
+
             Student updatedStudent = new Student
             {
-                Id = int.Parse(txtId.Text),
-                Name = txtName.Text,
-                Class = txtClass.Text,
-                Age = int.Parse(txtAge.Text),
+                Id        = int.Parse(txtId.Text),
+                Name      = txtName.Text,
+                Class     = txtClass.Text,
+                Age       = int.Parse(txtAge.Text),
                 ImageData = _currentImageData
             };
 
             _dbContext.UpdateStudent(updatedStudent);
             ReFreshGrid();
             ClearFields();
+            MessageBox.Show("Student updated successfully!", "Success",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            int id = int.Parse(txtId.Text);
-            _dbContext.DeleteStudent(id);
-            ReFreshGrid();
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                MessageBox.Show("Please enter a Student ID to delete.", "Validation",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var confirm = MessageBox.Show("Are you sure you want to delete this student?",
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.Yes)
+            {
+                int id = int.Parse(txtId.Text);
+                _dbContext.DeleteStudent(id);
+                ReFreshGrid();
+                ClearFields();
+                MessageBox.Show("Student deleted successfully!", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        // ← الجديد: زرار Clear
+        private void btnClear_Click(object sender, EventArgs e)
+        {
             ClearFields();
         }
 
@@ -98,9 +125,7 @@ namespace WindowsFormsStudent
             dgvStudents.DataSource = _dbContext.GetAllStudent();
 
             if (dgvStudents.Columns["ImageData"] != null)
-            {
                 dgvStudents.Columns["ImageData"].Visible = false;
-            }
         }
 
         private void dgvStudents_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -108,10 +133,10 @@ namespace WindowsFormsStudent
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvStudents.Rows[e.RowIndex];
-                txtId.Text = row.Cells["Id"].Value.ToString();
-                txtName.Text = row.Cells["Name"].Value.ToString();
+                txtId.Text    = row.Cells["Id"].Value.ToString();
+                txtName.Text  = row.Cells["Name"].Value.ToString();
                 txtClass.Text = row.Cells["Class"].Value.ToString();
-                txtAge.Text = row.Cells["Age"].Value.ToString();
+                txtAge.Text   = row.Cells["Age"].Value.ToString();
 
                 _currentImageData = row.Cells["ImageData"].Value as byte[];
                 DisplayImage(_currentImageData);
@@ -124,9 +149,30 @@ namespace WindowsFormsStudent
             txtName.Clear();
             txtClass.Clear();
             txtAge.Clear();
-            picStudent.Image = null;
+            picStudent.Image  = null;
             _currentImageData = null;
         }
-       
+
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(txtId.Text) ||
+                string.IsNullOrWhiteSpace(txtName.Text) ||
+                string.IsNullOrWhiteSpace(txtClass.Text) ||
+                string.IsNullOrWhiteSpace(txtAge.Text))
+            {
+                MessageBox.Show("Please fill in all fields.", "Validation",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (!int.TryParse(txtId.Text, out _) || !int.TryParse(txtAge.Text, out _))
+            {
+                MessageBox.Show("ID and Age must be valid numbers.", "Validation",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
     }
 }
